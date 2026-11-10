@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QIYAL | Сіздің махаббатыңыз мультфильмде</title>
+<meta name="description" content="Персональный мультфильм по вашим фото: love story, қыз ұзату, свадьба, предложение. Готово за 48 часов. Заказ в WhatsApp.">
+<meta property="og:title" content="QIYAL | Сіздің махаббатыңыз мультфильмде">
+<meta property="og:image" content="media/gen/s2.jpg">
+<meta name="theme-color" content="#160B1A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Playfair:ital,opsz,wght@0,5..1200,300..700;1,5..1200,300..700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+/* "Steppe golden hour": dusk plum + saukele red. One accent (red); apricot only for timecodes. */
+:root{
+  --night:#160B1A; --dusk:#24122A; --plum:#2E1835; --line:rgba(251,241,234,.12);
+  --milk:#FBF1EA; --muted:rgba(251,241,234,.66); --dim:rgba(251,241,234,.42);
+  --red:#D2384B; --red-hi:#E04A5C; --apricot:#F4A877;
+  --serif:"Playfair",Georgia,serif; --sans:Onest,system-ui,sans-serif;
+  --bar:9vh; --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--night);color:var(--milk);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.loading{overflow:hidden}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+.serif{font-family:var(--serif);font-variation-settings:"opsz" 1000;font-weight:300;letter-spacing:-.02em;line-height:.95}
+.serif em{font-style:italic;color:var(--red-hi);font-weight:400}
+.tc{font:500 12px/1 var(--sans);letter-spacing:.14em;color:var(--apricot);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+
+/* grain: fixed, non-interactive */
+body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion:no-preference){body::after{animation:grain 1s steps(4) infinite}}
+@keyframes grain{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-2%)}}
+
+/* buttons: pills */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:58px;padding:0 30px;border-radius:999px;font:600 16px var(--sans);white-space:nowrap;transition:transform .5s var(--ease),background .3s,border-color .3s,color .3s}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn i{font-size:22px}
+.btn-red{background:var(--red);color:var(--milk);box-shadow:0 18px 40px -16px rgba(210,56,75,.8)}
+.btn-red:hover{background:var(--red-hi);transform:translateY(-2px)}
+
+/* ---------- preloader ---------- */
+.loader{position:fixed;inset:0;z-index:300;background:var(--night);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+.loader .serif{font-size:clamp(40px,8vw,96px);letter-spacing:.06em}
+.loader .tc{font-size:14px}
+
+/* letterbox bars (fixed, intro) */
+.bars{position:fixed;inset:0;z-index:250;pointer-events:none}
+.bars span{position:absolute;left:0;right:0;height:50.5%;background:#0B060D;transform-origin:top}
+.bars span:last-child{bottom:0;transform-origin:bottom}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:background .4s}
+.nav.solid{background:rgba(22,11,26,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font:600 22px var(--serif);letter-spacing:.24em;font-variation-settings:"opsz" 200}
+.nav-r{display:flex;align-items:center;gap:10px}
+.lang{display:flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:rgba(22,11,26,.4);backdrop-filter:blur(10px)}
+.lang button{font-size:13px;font-weight:600;color:var(--muted);padding:7px 13px;border-radius:999px;transition:background .3s,color .3s}
+.lang button[aria-pressed=true]{background:var(--milk);color:var(--night)}
+.nav .btn{height:44px;padding:0 20px;font-size:14px;box-shadow:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100dvh;min-height:640px;overflow:hidden;isolation:isolate}
+.hero-blur{position:absolute;inset:-10%;z-index:-2}
+.hero-blur img{width:100%;height:100%;object-fit:cover;filter:blur(48px) saturate(1.2);opacity:.55}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(70% 60% at 50% 50%,transparent,var(--night) 85%)}
+.hero-grid{height:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h f" "s f";align-content:center;align-items:end;column-gap:clamp(48px,7vw,120px);row-gap:36px;padding-top:var(--bar);padding-bottom:var(--bar)}
+.hero-grid h1{grid-area:h}.hero-grid .frame{grid-area:f;align-self:center}.hero-grid .hero-side{grid-area:s;align-self:start}
+.hero h1{font-size:clamp(50px,5.6vw,108px)}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.06em}
+.hero h1 .ln > span{display:block}
+.frame{position:relative;width:clamp(260px,25vw,400px);max-height:76vh;aspect-ratio:9/16;transform-style:preserve-3d;will-change:transform;border-radius:20px;overflow:hidden;background:var(--plum);box-shadow:0 0 0 1px rgba(251,241,234,.14),0 60px 120px -40px rgba(0,0,0,.9),0 0 120px -20px rgba(210,56,75,.35)}
+.frame img,.frame video,.slide img,.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .8s ease}
+.frame .rec{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;z-index:2;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.frame .rec b{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--sans);letter-spacing:.14em}
+.frame .rec b::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red)}
+.hero-side p{font-size:19px;color:var(--muted);max-width:36ch;margin-bottom:30px}
+.hero-side .tc{display:block;margin-bottom:18px}
+.mob-bg{display:none}
+.leaves{position:absolute;inset:0;z-index:1;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .kb img{animation:kb 16s ease-in-out infinite alternate}
+}
+html.force-motion .kb img{animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.09) translate(-1.5%,-2%)}}
+.marq{overflow:hidden;padding:44px 0;border-block:1px solid var(--line);background:var(--night)}
+.marq-t{display:flex;width:max-content;gap:48px;align-items:center;will-change:transform}
+.marq-t span{font:italic 300 clamp(44px,6vw,96px)/1 var(--serif);font-variation-settings:"opsz" 1000;white-space:nowrap}
+.marq-t span:nth-child(4n+3){color:var(--red-hi)}
+.marq-t i{width:14px;height:14px;border-radius:50%;background:var(--apricot);flex:none}
+.disc{position:fixed;left:0;top:0;z-index:150;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;background:var(--red);color:var(--milk);display:grid;place-items:center;text-align:center;font:600 13px/1.2 var(--sans);letter-spacing:.06em;pointer-events:none;transform:scale(0);box-shadow:0 20px 50px -10px rgba(210,56,75,.7)}
+.disc i{display:block;font-size:22px;margin-bottom:4px}
+@media (hover:none){.disc{display:none}}
+
+/* ---------- scene: photo -> film ---------- */
+.morph{position:relative;height:100dvh;overflow:hidden;display:grid;place-items:center}
+.morph-in{display:grid;grid-template-columns:1fr auto 1fr;gap:56px;align-items:center;width:100%}
+.morph h2{font-size:clamp(44px,5vw,88px)}
+.morph-frame{position:relative;height:min(76vh,780px);aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--plum)}
+.morph-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.morph-frame .film{clip-path:inset(0 0 100% 0)}
+.morph-frame .scan{position:absolute;left:0;right:0;height:2px;top:0;background:var(--red-hi);box-shadow:0 0 24px 4px rgba(224,74,92,.8);z-index:3}
+.morph-frame .lbl{position:absolute;left:14px;bottom:14px;z-index:4;padding:7px 12px;border-radius:999px;background:rgba(22,11,26,.6);backdrop-filter:blur(10px);font:600 12px var(--sans);letter-spacing:.12em}
+.morph .note{max-width:30ch;font-size:18px}
+
+/* ---------- chapters: pinned horizontal track ---------- */
+.chapters{position:relative;overflow:hidden;background:var(--dusk)}
+.ch-head{padding:110px 0 44px}
+.ch-head h2{font-size:clamp(44px,5.2vw,92px);max-width:13ch}
+.track{display:flex;gap:28px;padding:0 32px 110px;width:max-content}
+.card{position:relative;width:min(360px,28vw);aspect-ratio:9/16;border-radius:20px;overflow:hidden;flex:none;background:var(--plum);isolation:isolate;cursor:pointer}
+.card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.2s var(--ease),opacity .8s}
+.card:hover img,.card:hover video{transform:scale(1.05)}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(22,11,26,.4),transparent 22%,transparent 42%,rgba(22,11,26,.95))}
+.card .top{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center}
+.card .num{font:300 44px/1 var(--serif);font-variation-settings:"opsz" 600}
+.card .body{position:absolute;left:22px;right:22px;bottom:22px}
+.card h3{font:400 34px/1 var(--serif);font-variation-settings:"opsz" 600;letter-spacing:-.01em}
+.card p{font-size:15px;color:var(--muted);margin:10px 0 16px}
+.card .go{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;border-bottom:1px solid var(--red-hi);padding-bottom:3px}
+.card.end{display:flex;flex-direction:column;justify-content:flex-end;padding:28px;background:linear-gradient(160deg,rgba(210,56,75,.4),var(--plum) 60%);cursor:default}
+.card.end::after{display:none}
+.card.end h3{font-size:46px;margin-bottom:26px}
+
+/* ---------- credits (how it works) ---------- */
+.credits{position:relative;padding:150px 0;text-align:center}
+.credits .tc{display:block;margin-bottom:26px}
+.credits h2{font-size:clamp(40px,4.6vw,80px);margin-bottom:96px}
+.roll{display:flex;flex-direction:column;gap:84px;max-width:760px;margin:0 auto}
+.role{display:flex;flex-direction:column;gap:12px;align-items:center}
+.role small{font:600 12px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+.role b{font:italic 400 clamp(32px,3.4vw,54px)/1.1 var(--serif);font-variation-settings:"opsz" 800;padding-bottom:.08em}
+.role span{color:var(--muted);max-width:42ch}
+
+/* ---------- reel takeover ---------- */
+.takeover{position:relative;height:100dvh;overflow:hidden;display:grid;place-items:center;background:var(--night)}
+.take-media{position:relative;width:min(320px,70vw);aspect-ratio:9/16;border-radius:20px;overflow:hidden;will-change:transform}
+.take-media img,.take-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.take-copy{position:absolute;inset:auto 0 0;padding:22vh 0 10vh;text-align:center;z-index:2;pointer-events:none;background:linear-gradient(transparent,rgba(22,11,26,.88) 70%)}
+.take-copy h2{font-size:clamp(48px,7vw,124px);text-shadow:0 10px 60px rgba(0,0,0,.6)}
+
+/* ---------- tickets ---------- */
+.tickets{padding:140px 0;background:var(--dusk)}
+.tickets h2{font-size:clamp(44px,5vw,88px)}
+.tickets .lead{max-width:44ch;margin:20px 0 64px}
+.tix{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:20px;align-items:end}
+.ticket{position:relative;display:flex;flex-direction:column;color:var(--night);background:var(--milk);border-radius:18px;padding:30px 28px 26px;
+  -webkit-mask:radial-gradient(circle 16px at 0 calc(100% - 78px),#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 16px at 100% calc(100% - 78px),#0000 97%,#000) right/51% 100% no-repeat;
+          mask:radial-gradient(circle 16px at 0 calc(100% - 78px),#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 16px at 100% calc(100% - 78px),#0000 97%,#000) right/51% 100% no-repeat}
+.ticket.feat{background:var(--red);color:var(--milk);padding-top:42px}
+.ticket .tc{color:inherit;opacity:.6}
+.ticket h3{font:400 48px/1 var(--serif);font-variation-settings:"opsz" 800;margin:14px 0 6px}
+.ticket.feat h3{font-size:62px}
+.ticket .rt{font-weight:600}
+.ticket ul{list-style:none;margin:22px 0 0;display:flex;flex-direction:column;gap:9px;font-size:15px;flex:1}
+.ticket li{display:flex;gap:10px}
+.ticket li i{margin-top:3px}
+.ticket .stub{margin-top:30px;height:62px;border-top:2px dashed rgba(22,11,26,.25);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.ticket.feat .stub{border-color:rgba(251,241,234,.45)}
+.ticket .stub a{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.ticket .stub a i{font-size:20px;transition:transform .4s var(--ease)}
+.ticket .stub a:hover i{transform:translateX(4px)}
+.ticket .badge{position:absolute;top:16px;right:18px;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+
+/* ---------- faq ---------- */
+.faq-sec{padding:140px 0}
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.faq-grid h2{font-size:clamp(44px,5vw,88px)}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:26px 44px 26px 0;font-weight:500;font-size:19px;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{position:absolute;right:0;top:29px;font-size:20px;color:var(--red-hi);transition:transform .5s var(--ease)}
+.faq details[open] summary i{transform:rotate(45deg)}
+.faq details p{color:var(--muted);padding:0 0 26px;max-width:56ch}
+
+/* ---------- finale ---------- */
+.finale{position:relative;height:100dvh;min-height:620px;display:grid;place-items:center;text-align:center;overflow:hidden;isolation:isolate}
+.finale .bg{position:absolute;inset:0;z-index:-2}
+.finale .bg img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.1)}
+.finale::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 60% at 50% 55%,rgba(22,11,26,.5),rgba(22,11,26,.94))}
+.finale .ob{position:absolute;left:0;right:0;height:0;background:#0B060D;z-index:1}
+.finale .ob.t{top:0}.finale .ob.b{bottom:0}
+.finale .in{position:relative;z-index:2;padding:0 24px}
+.finale h2{font-size:clamp(52px,7vw,128px);margin:18px 0 22px;padding-bottom:.08em}
+.finale p{color:var(--muted);font-size:19px;max-width:34ch;margin:0 auto 38px}
+
+footer{padding:28px 0;color:var(--dim);font-size:14px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{display:inline-flex;gap:8px;align-items:center}
+footer a:hover{color:var(--milk)}
+
+.fab{position:fixed;right:18px;bottom:18px;z-index:120;width:62px;height:62px;border-radius:999px;background:var(--red);display:grid;place-items:center;font-size:30px;box-shadow:0 16px 40px -10px rgba(210,56,75,.75);transition:transform .5s var(--ease),opacity .4s}
+.fab:hover{transform:translateY(-3px)}
+.fab.hide{opacity:0;pointer-events:none;transform:translateY(16px)}
+
+.modal{position:fixed;inset:0;z-index:400;background:rgba(11,6,13,.95);display:none;align-items:center;justify-content:center;padding:24px}
+.modal.on{display:flex}
+.modal video{height:min(88dvh,960px);max-width:100%;aspect-ratio:9/16;border-radius:20px;background:#000;object-fit:cover}
+.modal .x{position:absolute;top:18px;right:18px;width:50px;height:50px;border-radius:999px;border:1px solid var(--line);display:grid;place-items:center;font-size:22px}
+
+.sw-m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+.sw{display:inline-block}
+
+/* ---------- mobile ---------- */
+@media (max-width:900px){
+  .wrap{padding:0 18px}
+  .hero{height:auto;min-height:100svh}
+  .hero-blur{display:none}
+  .mob-bg{display:block;position:absolute;inset:0;z-index:-2}
+  .mob-bg .slide{position:absolute;inset:0}
+  .hero::before{background:linear-gradient(180deg,rgba(22,11,26,.6) 0%,transparent 20%,transparent 38%,rgba(22,11,26,.9) 68%,var(--night) 100%)}
+  .hero-grid{display:flex;flex-direction:column;justify-content:flex-end;min-height:100svh;gap:16px;padding:0 0 32px}
+  .marq{padding:28px 0}
+  .marq-t{gap:28px}
+  .hero-grid .frame{display:none}
+  .hero h1{font-size:clamp(48px,13.5vw,66px)}
+  .hero-side p{font-size:17px;margin-bottom:22px}
+  .hero-side .tc{display:none}
+  .hero-side .btn{width:100%}
+  .morph{height:auto;padding:110px 0}
+  .morph-in{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center}
+  .morph-frame{height:auto;width:min(320px,82vw)}
+  .ch-head{padding:96px 0 32px}
+  .track-wrap{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .track-wrap::-webkit-scrollbar{display:none}
+  .track{padding:0 18px 96px;gap:14px}
+  .card{width:80vw;scroll-snap-align:center}
+  .credits{padding:110px 0}
+  .credits h2{margin-bottom:64px}
+  .roll{gap:56px}
+  .takeover{height:auto;padding:30px 0 110px;display:flex;flex-direction:column;align-items:center}
+  .take-media{width:84vw}
+  .take-copy{position:static;margin-top:28px}
+  .tickets{padding:100px 0}
+  .tix{grid-template-columns:1fr;gap:16px}
+  .ticket.feat{order:-1}
+  .faq-sec{padding:100px 0}
+  .faq-grid{grid-template-columns:1fr;gap:28px}
+  .nav .btn .t{display:none}
+  .nav .btn{width:44px;padding:0}
+  footer .wrap{flex-direction:column;padding-bottom:76px}
+}
+@media (prefers-reduced-motion:reduce){html:not(.force-motion) .loader,html:not(.force-motion) .bars{display:none!important}}
+</style>
+</head>
+<body class="loading">
+<script>if(/motion=1/.test(location.search)) document.documentElement.classList.add("force-motion");</script>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="serif">QIYAL</div>
+  <div class="tc" id="tcLoad">00:00:00:00</div>
+</div>
+<div class="bars" id="bars" aria-hidden="true"><span></span><span></span></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">QIYAL</a>
+    <div class="nav-r">
+      <div class="lang" role="group" aria-label="Тіл / Язык">
+        <button data-l="kk" aria-pressed="true">ҚАЗ</button>
+        <button data-l="ru" aria-pressed="false">РУС</button>
+      </div>
+      <a class="btn btn-red wa" href="#" aria-label="WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i><span class="t" data-t="cta"></span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-blur" id="heroBlur"></div>
+    <div class="mob-bg" id="mobBg"></div>
+    <div class="wrap hero-grid">
+      <h1 class="serif" id="h1"></h1>
+      <div class="frame" id="heroFrame"><div class="rec"><b>REC</b><span class="tc" id="tcLive">00:00:00:00</span></div></div>
+      <div class="hero-side">
+        <span class="tc" data-t="scene1"></span>
+        <p data-t="hero_p"></p>
+        <a class="btn btn-red wa" href="#"><i class="ph-fill ph-whatsapp-logo"></i><span data-t="cta"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="morph" id="morph">
+    <div class="wrap morph-in">
+      <h2 class="serif" data-split data-t="morph_h"></h2>
+      <div class="morph-frame">
+        <img class="photo" id="mPhoto" alt="">
+        <img class="film" id="mFilm" alt="">
+        <div class="scan" id="scan"></div>
+        <span class="lbl" id="mLbl"></span>
+      </div>
+      <p class="note muted" data-t="morph_p" data-rv></p>
+    </div>
+  </section>
+
+  <div class="marq" aria-hidden="true"><div class="marq-t" id="marq"></div></div>
+
+  <section class="chapters" id="films">
+    <div class="wrap ch-head">
+      <span class="tc" data-t="scene3"></span>
+      <h2 class="serif" data-split data-t="ch_h" style="margin-top:18px"></h2>
+    </div>
+    <div class="track-wrap"><div class="track" id="track"></div></div>
+  </section>
+
+  <section class="credits">
+    <div class="wrap">
+      <span class="tc" data-t="scene4"></span>
+      <h2 class="serif" data-split data-t="cr_h"></h2>
+      <div class="roll" id="roll"></div>
+    </div>
+  </section>
+
+  <section class="takeover" id="takeover">
+    <div class="take-media kb" id="takeMedia"></div>
+    <div class="take-copy"><h2 class="serif" data-t="take_h"></h2></div>
+  </section>
+
+  <section class="tickets" id="formats">
+    <div class="wrap">
+      <span class="tc" data-t="scene6"></span>
+      <h2 class="serif" data-split data-t="tix_h" style="margin-top:18px"></h2>
+      <p class="lead muted" data-t="tix_p" data-rv></p>
+      <div class="tix" id="tix"></div>
+    </div>
+  </section>
+
+  <section class="faq-sec">
+    <div class="wrap faq-grid">
+      <h2 class="serif" data-split data-t="faq_h"></h2>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <section class="finale" id="finale">
+    <div class="bg kb" id="finaleBg"></div>
+    <div class="ob t"></div><div class="ob b"></div>
+    <div class="in">
+      <span class="tc" data-t="scene7"></span>
+      <h2 class="serif" data-t="fin_h"></h2>
+      <p data-t="fin_p"></p>
+      <a class="btn btn-red wa" href="#"><i class="ph-fill ph-whatsapp-logo"></i><span data-t="cta"></span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> QIYAL</span>
+    <a class="wa" href="#"><i class="ph ph-whatsapp-logo"></i><span id="waShown"></span></a>
+  </div>
+</footer>
+
+<div class="disc" id="disc" aria-hidden="true"></div>
+<a class="fab wa" id="fab" href="#" aria-label="WhatsApp"><i class="ph-fill ph-whatsapp-logo"></i></a>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><button class="x" aria-label="Close"><i class="ph ph-x"></i></button><video id="mv" controls playsinline></video></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+/* ======================= EDIT HERE ======================= */
+const WHATSAPP = "77000000000"; // digits only, e.g. 77071234567
+
+// Our own films. poster = still (shown first), src = animated clip (fades in once the file exists).
+const FILMS = [
+  { poster:"media/gen/s1.jpg", src:"media/gen/c1.mp4", tag:{kk:"Махаббат хикаясы",ru:"Love story"}, title:{kk:"Алматыдағы күз",ru:"Осень в Алматы"},  text:{kk:"Таныстықтан бүгінге дейінгі жолыңыз.",ru:"Ваш путь от знакомства до сегодня."} },
+  { poster:"media/gen/s2.jpg", src:"media/gen/c2.mp4", tag:{kk:"Ұсыныс",ru:"Предложение"},          title:{kk:"Көлсайдағы «иә»",ru:"«Да» на Кольсае"}, text:{kk:"Фильмнің соңында ең басты сұрақ.",ru:"Главный вопрос в финале фильма."} },
+  { poster:"media/gen/s3.jpg", src:"media/gen/c3.mp4", tag:{kk:"Қыз ұзату",ru:"Кыз узату"},         title:{kk:"Аруды ұзату",ru:"Проводы невесты"},  text:{kk:"Аруның хикаясы барлық қонаққа.",ru:"История невесты для всех гостей."} },
+  { poster:"media/gen/s4.jpg", src:"media/gen/c4.mp4", tag:{kk:"Үйлену тойы",ru:"Свадьба"},         title:{kk:"Бірінші би",ru:"Первый танец"},      text:{kk:"Тойда үлкен экранда көрсетіңіз.",ru:"Покажите на большом экране свадьбы."} },
+  { poster:"media/gen/s5.jpg", src:"media/gen/c5.mp4", tag:{kk:"Ата-анаға",ru:"Родителям"},         title:{kk:"Қырық жыл бірге",ru:"Сорок лет вместе"}, text:{kk:"Олардың хикаясы, олардың құрметіне.",ru:"Их история, в их честь."} },
+];
+const MORPH = { photo:"media/gen/photo.jpg", film:"media/gen/s1.jpg" };
+const FINALE_BG = "media/gen/s2.jpg";
+/* ========================================================= */
+
+const T = {
+ cta:{kk:"WhatsApp-қа жазу",ru:"Написать в WhatsApp"},
+ h1:{kk:["Сіздің","махаббатыңыз","<em>мультфильмде</em>"],ru:["Ваша","любовь","<em>в мультфильме</em>"]},
+ scene1:{kk:"СЦЕНА 01 · ТАНЫСТЫҚ",ru:"СЦЕНА 01 · ЗНАКОМСТВО"},
+ hero_p:{kk:"Екі фото мен хикаяңыз жеткілікті. Басты кейіпкерлері өздеріңіз болатын фильм 48 сағатта дайын.",ru:"Два фото и ваша история. Через 48 часов готов фильм, где главные герои вы."},
+ morph_h:{kk:"Бір фото. Бір фильм.",ru:"Одно фото. Один фильм."},
+ morph_p:{kk:"Сіздің бет-әлпетіңіз, сіздің қалаңыз, сіздің сәттеріңіз. Біз оларды анимация әлеміне көшіреміз.",ru:"Ваши лица, ваш город, ваши моменты. Мы переносим их в мир анимации."},
+ lbl_photo:{kk:"ФОТО",ru:"ФОТО"}, lbl_film:{kk:"ФИЛЬМ",ru:"ФИЛЬМ"},
+ scene3:{kk:"СЦЕНА 03 · ТАРАУЛАР",ru:"СЦЕНА 03 · ГЛАВЫ"},
+ ch_h:{kk:"Өміріңіздің ең маңызды тараулары",ru:"Главные главы вашей жизни"},
+ ch_go:{kk:"Осындай фильм алу",ru:"Хочу такой фильм"},
+ ch_end:{kk:"Келесі тарау сіздікі",ru:"Следующая глава ваша"},
+ scene4:{kk:"СЦЕНА 04 · ТИТРЛАР",ru:"СЦЕНА 04 · ТИТРЫ"},
+ cr_h:{kk:"Фильм қалай жасалады",ru:"Как создаётся фильм"},
+ take_h:{kk:"Сіздің <em>хикаяңыз</em>",ru:"Ваша <em>история</em>"},
+ scene6:{kk:"СЦЕНА 06 · БИЛЕТТЕР",ru:"СЦЕНА 06 · БИЛЕТЫ"},
+ tix_h:{kk:"Фильміңіздің ұзақтығы",ru:"Длина вашего фильма"},
+ tix_p:{kk:"Баға көрініс санына байланысты. Хикаяңызды жазыңыз, бағасын бірден айтамыз.",ru:"Цена зависит от количества сцен. Напишите историю, назовём цену сразу."},
+ get:{kk:"Билет алу",ru:"Взять билет"},
+ popular:{kk:"Жиі таңдайды",ru:"Выбирают чаще"},
+ faq_h:{kk:"Сұрақтар",ru:"Вопросы"},
+ scene7:{kk:"СОҢЫ",ru:"ФИНАЛ"},
+ fin_h:{kk:"Соңы ма, әлде <em>бастауы</em> ма?",ru:"Конец или <em>начало</em>?"},
+ fin_p:{kk:"Хикаяңызды жазыңыз. Мысалдар жіберіп, идеяңызды бірге талқылаймыз.",ru:"Напишите вашу историю. Пришлём примеры и обсудим идею."},
+};
+
+const CREDITS = [
+ {role:{kk:"Сценарий",ru:"Сценарий"}, who:{kk:"сіздің әңгімеңіз",ru:"ваш рассказ"}, d:{kk:"Әрқайсыңыздың бір анық фотосы және қалай таныстыңыздар.",ru:"По одному чёткому фото каждого и как вы познакомились."}},
+ {role:{kk:"Кастинг",ru:"Кастинг"}, who:{kk:"сіз бекітесіз",ru:"утверждаете вы"}, d:{kk:"Анимацияға дейін портреттерді көрсетеміз. Өздеріңізді танымайынша жалғастырмаймыз.",ru:"До анимации показываем портреты. Не продолжаем, пока вы не узнаете себя."}},
+ {role:{kk:"Премьера",ru:"Премьера"}, who:{kk:"48 сағаттан кейін",ru:"через 48 часов"}, d:{kk:"Дайын фильм WhatsApp-қа келеді. Екі түзету бағаға кіреді.",ru:"Готовый фильм приходит в WhatsApp. Две правки включены."}},
+];
+
+const TIX = [
+ {name:{kk:"Классика",ru:"Классика"}, rt:{kk:"1 минутқа дейін",ru:"до 1 минуты"}, li:{kk:["2K сапа","Музыка","Кейіпкерлерді бекіту"],ru:["Качество 2K","Музыка","Утверждение героев"]}},
+ {feat:true, name:{kk:"Премиум",ru:"Премиум"}, rt:{kk:"2 минутқа дейін",ru:"до 2 минут"}, li:{kk:["Кинолық 2K сапа","Қазақша немесе орысша дауыстау","Есімдеріңіз бен күндеріңіз","Тойда көрсетуге арналған нұсқа"],ru:["Кино-качество 2K","Озвучка на казахском или русском","Ваши имена и даты","Версия для показа на свадьбе"]}},
+ {name:{kk:"Ультима",ru:"Ультима"}, rt:{kk:"3 минутқа дейін",ru:"до 3 минут"}, li:{kk:["4K сапа","Жеке сценарий","Кәсіби дауыстау"],ru:["Качество 4K","Свой сценарий","Профессиональная озвучка"]}},
+];
+
+const FAQ = [
+ {q:{kk:"Не жіберу керек?",ru:"Что нужно прислать?"},a:{kk:"Әрқайсыңыздың беті анық көрінетін бір-екі фото және хикаяңыз.",ru:"По одной-две фотографии каждого, где хорошо видно лицо, и вашу историю."}},
+ {q:{kk:"Кейіпкерлер бізге ұқсай ма?",ru:"Герои будут похожи на нас?"},a:{kk:"Иә. Анимацияға дейін портреттерді көрсетеміз және сіз бекіткенше жалғастырмаймыз.",ru:"Да. До анимации показываем портреты и не продолжаем, пока вы не одобрите."}},
+ {q:{kk:"Қанша уақыт кетеді?",ru:"Сколько это занимает?"},a:{kk:"Әдетте 48 сағат. Ультима форматы 3 күнге дейін.",ru:"Обычно 48 часов. Формат Ультима до 3 дней."}},
+ {q:{kk:"Қай тілде болады?",ru:"На каком языке?"},a:{kk:"Қазақша немесе орысша. Жазулар мен дауыстау екі тілде.",ru:"На казахском или русском. Титры и озвучка на обоих."}},
+ {q:{kk:"Қалай төлеймін?",ru:"Как оплатить?"},a:{kk:"Kaspi немесе карта арқылы. Толығырақ WhatsApp-та.",ru:"Kaspi или картой. Подробности в WhatsApp."}},
+];
+
+const MSG = {
+ general:{kk:"Сәлеметсіз бе! Мультфильмге тапсырыс бергім келеді.",ru:"Здравствуйте! Хочу заказать мультфильм."},
+ film:{kk:"Сәлеметсіз бе! «{x}» сияқты фильм қалаймын.",ru:"Здравствуйте! Хочу фильм как «{x}»."},
+ format:{kk:"Сәлеметсіз бе! «{x}» форматының бағасын білгім келеді.",ru:"Здравствуйте! Хочу узнать цену формата «{x}»."},
+};
+
+/* --------------------------------------------------------- */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches && !/motion=1/.test(location.search); // ?motion=1 = QA override
+const mobile = () => matchMedia("(max-width:900px)").matches;
+const hasGsap = !!window.gsap && !!window.ScrollTrigger;
+let L = (()=>{try{return localStorage.getItem("qiyal-lang")||"kk"}catch(e){return "kk"}})();
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const wa = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
+// still first; the clip fades in on top once it has loaded (missing clip = still stays)
+const media = f => `<img src="${f.poster}" alt=""><video src="${f.src}" muted loop playsinline preload="none" style="opacity:0" onloadeddata="this.style.opacity=1"></video>`;
+const tc = s => { const f=Math.floor((s%1)*24), t=Math.floor(s); return `00:${String(Math.floor(t/60)).padStart(2,"0")}:${String(t%60).padStart(2,"0")}:${String(f).padStart(2,"0")}`; };
+
+function splitWords(el){
+  const tmp=document.createElement("div"); tmp.innerHTML=el.innerHTML; const out=[];
+  tmp.childNodes.forEach(n=>{
+    if(n.nodeType===3) n.textContent.split(/(\s+)/).forEach(p=>out.push(p.trim()?`<span class="sw-m"><span class="sw">${p}</span></span>`:p));
+    else out.push(`<span class="sw-m"><span class="sw">${n.outerHTML}</span></span>`);
+  });
+  el.innerHTML=out.join("");
+}
+
+function render(){
+  document.documentElement.lang = L;
+  $$("[data-t]").forEach(el=>{const v=T[el.dataset.t]; if(v) el.innerHTML=v[L];});
+  $("#h1").innerHTML = T.h1[L].map(x=>`<span class="ln"><span>${x}</span></span>`).join("");
+  $$("[data-split]").forEach(splitWords);
+  $$(".lang button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.l===L));
+  $$(".wa").forEach(a=>{a.href=wa(MSG.general[L]); a.target="_blank"; a.rel="noopener";});
+
+  $("#track").innerHTML = FILMS.map((f,i)=>`
+    <article class="card kb" data-i="${i}">
+      ${media(f)}
+      <div class="top"><span class="num">0${i+1}</span><span class="tc">${tc(i*7.4+3.2)}</span></div>
+      <div class="body">
+        <span class="tc">${f.tag[L].toUpperCase()}</span>
+        <h3 style="margin-top:8px">${f.title[L]}</h3>
+        <p>${f.text[L]}</p>
+        <a class="go" target="_blank" rel="noopener" href="${wa(MSG.film[L].replace("{x}",f.title[L]))}">${T.ch_go[L]} <i class="ph ph-arrow-up-right"></i></a>
+      </div>
+    </article>`).join("") + `
+    <article class="card end"><h3>${T.ch_end[L]}</h3><a class="btn btn-red" target="_blank" rel="noopener" href="${wa(MSG.general[L])}"><i class="ph-fill ph-whatsapp-logo"></i>${T.cta[L]}</a></article>`;
+
+  $("#roll").innerHTML = CREDITS.map(c=>`<div class="role"><small>${c.role[L]}</small><b>${c.who[L]}</b><span>${c.d[L]}</span></div>`).join("");
+
+  $("#tix").innerHTML = TIX.map(t=>`
+    <div class="ticket ${t.feat?"feat":""}" data-rv>
+      ${t.feat?`<span class="badge">${T.popular[L]}</span>`:""}
+      <span class="tc">QIYAL · ${t.feat?"ROW A":"ROW B"}</span><h3>${t.name[L]}</h3><span class="rt">${t.rt[L]}</span>
+      <ul>${t.li[L].map(x=>`<li><i class="ph-bold ph-check"></i>${x}</li>`).join("")}</ul>
+      <div class="stub"><span class="tc">ADMIT 2</span><a target="_blank" rel="noopener" href="${wa(MSG.format[L].replace("{x}",t.name[L]))}">${T.get[L]} <i class="ph-bold ph-arrow-right"></i></a></div>
+    </div>`).join("");
+
+  $("#faq").innerHTML = FAQ.map(f=>`<details><summary>${f.q[L]}<i class="ph ph-plus"></i></summary><p>${f.a[L]}</p></details>`).join("");
+  $("#waShown").textContent = "+"+WHATSAPP.replace(/^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/,"$1 $2 $3 $4 $5");
+  $("#yr").textContent = new Date().getFullYear();
+  $("#mLbl").textContent = T.lbl_photo[L];
+  $$(".card[data-i]").forEach(el=>vio.observe(el));
+}
+
+/* play videos only while visible */
+const vio = new IntersectionObserver(es=>es.forEach(e=>{
+  e.target.querySelectorAll("video").forEach(v=>{ if(reduce) return; if(e.isIntersecting){ v.preload="auto"; v.play().catch(()=>{}); } else v.pause(); });
+}),{threshold:.15});
+
+/* static media slots */
+$("#heroBlur").innerHTML = `<img src="${FILMS[0].poster}" alt="">`;
+const slides = FILMS.map((f,i)=>`<div class="slide kb" style="position:absolute;inset:0;opacity:${i?0:1};transition:opacity 1.4s ease">${media(f)}</div>`).join("");
+$("#heroFrame").insertAdjacentHTML("afterbegin", slides);
+$("#mobBg").innerHTML = slides;
+$("#mPhoto").src = MORPH.photo;
+$("#mPhoto").onerror = function(){ this.onerror=null; this.src=FILMS[0].poster; this.style.filter="grayscale(1) contrast(1.05) brightness(.95)"; };
+$("#mFilm").src = MORPH.film;
+$("#takeMedia").innerHTML = media(FILMS[1]);
+$("#finaleBg").innerHTML = `<img src="${FINALE_BG}" alt="">`;
+$$(".slide,.take-media").forEach(el=>vio.observe(el));
+
+/* hero crossfade (both desktop frame and mobile bg) + live timecode */
+let si=0; const t0=performance.now();
+setInterval(()=>{ if(reduce) return; [$("#heroFrame"),$("#mobBg")].forEach(box=>{ const s=box.querySelectorAll(".slide"); s[si].style.opacity=0; s[(si+1)%s.length].style.opacity=1; }); si=(si+1)%FILMS.length; }, 5200);
+(function tick(){ $("#tcLive").textContent = tc((performance.now()-t0)/1000); requestAnimationFrame(tick); })();
+
+/* modal player (only when the clip exists) */
+const modal=$("#modal"), mv=$("#mv");
+$("#track").addEventListener("click",e=>{
+  if(e.target.closest("a")) return;
+  const c=e.target.closest(".card[data-i]"); if(!c) return; const f=FILMS[c.dataset.i];
+  const v=c.querySelector("video"); if(!v || v.readyState<2) return;
+  mv.src=f.src; mv.poster=f.poster; modal.classList.add("on"); mv.play().catch(()=>{});
+});
+const close=()=>{modal.classList.remove("on");mv.pause();mv.removeAttribute("src");mv.load();};
+modal.querySelector(".x").onclick=close; modal.addEventListener("click",e=>{if(e.target===modal)close();}); addEventListener("keydown",e=>{if(e.key==="Escape")close();});
+
+/* nav + fab */
+new IntersectionObserver(([e])=>$("#nav").classList.toggle("solid",!e.isIntersecting),{rootMargin:"-60% 0px 0px 0px"}).observe($(".hero"));
+const fabSeen=new Set();
+new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?fabSeen.add(e.target):fabSeen.delete(e.target)); $("#fab").classList.toggle("hide",fabSeen.size>0); },{threshold:.25}).observe($("#finale"));
+new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?fabSeen.add(e.target):fabSeen.delete(e.target)); $("#fab").classList.toggle("hide",fabSeen.size>0); },{threshold:0}).observe($(".hero-side .btn"));
+
+/* ================= MOTION (GSAP + Lenis) ================= */
+function intro(){
+  const loader=$("#loader"), bars=$$("#bars span");
+  const done=()=>{ loader.remove(); document.body.classList.remove("loading"); };
+  if(reduce || !hasGsap){ done(); $("#bars").remove(); return Promise.resolve(); }
+  return new Promise(res=>{
+    const o={t:0};
+    gsap.timeline({onComplete:()=>{done(); res();}})
+      .to(o,{t:3.5,duration:1.5,ease:"power2.inOut",onUpdate:()=>{const el=$("#tcLoad"); if(el) el.textContent=tc(o.t);}})
+      .to(loader,{autoAlpha:0,duration:.35})
+      .to(bars,{scaleY:mobile()?0:.18,duration:1.2,ease:"expo.inOut"},"<")
+      .from("#h1 .ln > span",{yPercent:110,duration:1.2,ease:"power4.out",stagger:.1},"-=.75")
+      .from(".frame",{scale:.92,autoAlpha:0,duration:1.3,ease:"power3.out"},"<")
+      .from(".hero-side > *",{y:24,autoAlpha:0,duration:1,ease:"power3.out",stagger:.08},"<.2");
+  });
+}
+
+let ctx;
+function scenes(){
+  if(reduce || !hasGsap) return;
+  gsap.registerPlugin(ScrollTrigger);
+  ctx && ctx.revert();
+  ctx = gsap.context(()=>{
+    const bars=$$("#bars span");
+    if(bars.length && !mobile()) gsap.to(bars,{scaleY:0,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom 45%",scrub:true}});
+    gsap.to(".frame",{yPercent:-8,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:1}});
+
+    $$("[data-split]").forEach(el=>gsap.fromTo(el.querySelectorAll(".sw"),{yPercent:110},{yPercent:0,duration:1,ease:"power4.out",stagger:.05,scrollTrigger:{trigger:el,start:"top 86%",once:true}}));
+    $$("[data-rv]").forEach(el=>gsap.fromTo(el,{y:36,autoAlpha:0},{y:0,autoAlpha:1,duration:1,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 90%",once:true}}));
+
+    // photo -> film wipe
+    gsap.timeline({scrollTrigger:{trigger:"#morph",start:mobile()?"top 65%":"top top",end:mobile()?"bottom 55%":"+=120%",scrub:1,pin:!mobile(),
+        onUpdate:s=>{$("#mLbl").textContent = s.progress>.5?T.lbl_film[L]:T.lbl_photo[L];}}})
+      .to("#mFilm",{clipPath:"inset(0 0 0% 0)",ease:"none"},0)
+      .fromTo("#scan",{top:"0%"},{top:"100%",ease:"none"},0)
+      .to("#scan",{autoAlpha:0,duration:.04});
+
+    // chapters: horizontal pan on desktop
+    if(!mobile()){
+      const track=$("#track");
+      gsap.to(track,{x:()=>-(track.scrollWidth-innerWidth),ease:"none",scrollTrigger:{trigger:".chapters",start:"top top",end:()=>"+="+(track.scrollWidth-innerWidth),pin:true,scrub:1,invalidateOnRefresh:true,anticipatePin:1}});
+    }
+
+    // credits roll
+    gsap.utils.toArray(".role").forEach(r=>gsap.fromTo(r,{y:90,autoAlpha:0},{y:0,autoAlpha:1,ease:"none",scrollTrigger:{trigger:r,start:"top 96%",end:"top 62%",scrub:1}}));
+
+    // reel takeover
+    if(!mobile()){
+      gsap.timeline({scrollTrigger:{trigger:"#takeover",start:"top top",end:"+=140%",pin:true,scrub:1,invalidateOnRefresh:true}})
+        .to("#takeMedia",{scale:()=>Math.max(innerWidth/$("#takeMedia").offsetWidth, innerHeight/$("#takeMedia").offsetHeight)*1.02,borderRadius:0,ease:"power1.inOut"},0)
+        .fromTo(".take-copy",{autoAlpha:0,y:40},{autoAlpha:1,y:0,ease:"none"},.45);
+    }
+
+    // finale letterbox closes
+    gsap.to(".finale .ob",{height:"11vh",ease:"none",scrollTrigger:{trigger:"#finale",start:"top 60%",end:"top top",scrub:1}});
+    gsap.fromTo(".finale .in > *",{y:40,autoAlpha:0},{y:0,autoAlpha:1,stagger:.1,duration:1,ease:"power3.out",scrollTrigger:{trigger:"#finale",start:"top 45%",once:true}});
+  });
+  ScrollTrigger.refresh();
+}
+
+/* ================= LIVING DETAILS ================= */
+const MARQ={kk:["Махаббат хикаясы","Ұсыныс","Қыз ұзату","Үйлену тойы","Мерейтой","Ата-анаға"],ru:["Love story","Предложение","Кыз узату","Свадьба","Годовщина","Родителям"]};
+const DISC={kk:"Көру",ru:"Смотреть"};
+function renderMarq(){ const one=MARQ[L].map(w=>`<span>${w}</span><i></i>`).join(""); $("#marq").innerHTML=one+one+one; $("#disc").innerHTML=`<div><i class="ph-fill ph-play"></i>${DISC[L]}</div>`; }
+renderMarq();
+const fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+let livingOn=false;
+function living(){
+  if(reduce || !hasGsap || livingOn) return; livingOn=true;
+  // marquee: constant drift, speeds up and flips with scroll direction
+  const mt=$("#marq"); let dir=-1, base=0;
+  gsap.ticker.add(()=>{ base+=dir*0.6; const w=mt.scrollWidth/3; if(base<=-w) base+=w; if(base>0) base-=w; gsap.set(mt,{x:base}); });
+  ScrollTrigger.create({trigger:".marq",start:"top bottom",end:"bottom top",onUpdate:s=>{ dir = s.direction>0?-1:1; base += -s.getVelocity()/220; }});
+
+  if(!fine) return;
+  // hero film tilts toward the cursor
+  const fr=$(".frame"); gsap.set(fr,{transformPerspective:1100});
+  const rx=gsap.quickTo(fr,"rotationY",{duration:.8,ease:"power3"}), ry=gsap.quickTo(fr,"rotationX",{duration:.8,ease:"power3"});
+  $(".hero").addEventListener("pointermove",e=>{ const r=fr.getBoundingClientRect(); rx(((e.clientX-(r.left+r.width/2))/innerWidth)*14); ry(-((e.clientY-(r.top+r.height/2))/innerHeight)*10); });
+  $(".hero").addEventListener("pointerleave",()=>{rx(0);ry(0);});
+
+  // magnetic CTAs
+  $$(".btn-red").forEach(b=>{ const mx=gsap.quickTo(b,"x",{duration:.5,ease:"power3"}), my=gsap.quickTo(b,"y",{duration:.5,ease:"power3"});
+    b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect(); mx((e.clientX-r.left-r.width/2)*.25); my((e.clientY-r.top-r.height/2)*.35);});
+    b.addEventListener("pointerleave",()=>{mx(0);my(0);}); });
+
+  // play disc follows the cursor over chapter cards
+  const d=$("#disc"), dx=gsap.quickTo(d,"x",{duration:.45,ease:"power3"}), dy=gsap.quickTo(d,"y",{duration:.45,ease:"power3"});
+  addEventListener("pointermove",e=>{dx(e.clientX);dy(e.clientY);});
+  $("#track").addEventListener("pointerover",e=>{ const c=e.target.closest(".card[data-i]"); const onLink=e.target.closest("a"); gsap.to(d,{scale:c&&!onLink?1:0,duration:.35,ease:"power3.out"}); });
+  $("#track").addEventListener("pointerleave",()=>gsap.to(d,{scale:0,duration:.3}));
+}
+
+$$(".lang button").forEach(b=>b.onclick=()=>{ L=b.dataset.l; try{localStorage.setItem("qiyal-lang",L)}catch(e){} render(); renderMarq(); scenes(); });
+
+render();
+if(hasGsap && !reduce && window.Lenis){
+  const lenis=new Lenis({lerp:.085,smoothWheel:true,wheelMultiplier:.9});
+  lenis.on("scroll",ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000)); gsap.ticker.lagSmoothing(0);
+}
+intro().then(()=>{ scenes(); living(); });
+addEventListener("load",()=>hasGsap && ScrollTrigger.refresh());
+setTimeout(()=>{ const l=$("#loader"); if(l){ l.remove(); document.body.classList.remove("loading"); if(window.gsap){ gsap.set("#bars span",{scaleY:mobile()?0:.18}); gsap.set("#h1 .ln > span,.frame,.hero-side > *",{clearProps:"all"}); } } }, 7000);
+</script>
+</body>
+</html>
