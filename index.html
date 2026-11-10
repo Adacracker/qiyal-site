@@ -103,16 +103,23 @@ html.force-motion .kb img{animation:kb 16s ease-in-out infinite alternate}
 .disc i{display:block;font-size:22px;margin-bottom:4px}
 @media (hover:none){.disc{display:none}}
 
-/* ---------- scene: photo -> film ---------- */
-.morph{position:relative;height:100dvh;overflow:hidden;display:grid;place-items:center}
-.morph-in{display:grid;grid-template-columns:1fr auto 1fr;gap:56px;align-items:center;width:100%}
-.morph h2{font-size:clamp(44px,5vw,88px)}
-.morph-frame{position:relative;height:min(76vh,780px);aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--plum)}
-.morph-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.morph-frame .film{clip-path:inset(0 0 100% 0)}
-.morph-frame .scan{position:absolute;left:0;right:0;height:2px;top:0;background:var(--red-hi);box-shadow:0 0 24px 4px rgba(224,74,92,.8);z-index:3}
-.morph-frame .lbl{position:absolute;left:14px;bottom:14px;z-index:4;padding:7px 12px;border-radius:999px;background:rgba(22,11,26,.6);backdrop-filter:blur(10px);font:600 12px var(--sans);letter-spacing:.12em}
-.morph .note{max-width:30ch;font-size:18px}
+/* ---------- film wall: every film playing at once ---------- */
+.wall{position:relative;padding:130px 0 150px;overflow:hidden}
+.wall-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px}
+.wall-head h2{font-size:clamp(44px,5.2vw,92px);max-width:11ch}
+.wall-head p{max-width:32ch;font-size:18px}
+.wall-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:0 32px;max-width:1600px;margin:0 auto}
+.wcol{display:flex;flex-direction:column;gap:16px;will-change:transform}
+.wcol:nth-child(even){margin-top:120px}
+.wtile{position:relative;aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:var(--plum);cursor:pointer;isolation:isolate}
+.wtile img,.wtile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.wtile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(transparent 55%,rgba(22,11,26,.9))}
+.wtile span{position:absolute;left:16px;right:16px;bottom:14px;font:400 22px/1.05 var(--serif);font-variation-settings:"opsz" 400}
+.wtile small{display:block;font:600 11px var(--sans);letter-spacing:.14em;color:var(--apricot);margin-bottom:6px;text-transform:uppercase}
+.wtile.cta{display:flex;flex-direction:column;justify-content:flex-end;gap:18px;padding:22px;background:linear-gradient(160deg,var(--red),#7d1f35);cursor:default}
+.wtile.cta::after{display:none}
+.wtile.cta b{font:400 32px/1.02 var(--serif);font-variation-settings:"opsz" 600}
+.wtile.cta a{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;font-weight:600;background:var(--milk);color:var(--night);padding:12px 18px;border-radius:999px}
 
 /* ---------- chapters: pinned horizontal track ---------- */
 .chapters{position:relative;overflow:hidden;background:var(--dusk)}
@@ -134,7 +141,10 @@ html.force-motion .kb img{animation:kb 16s ease-in-out infinite alternate}
 .card.end h3{font-size:46px;margin-bottom:26px}
 
 /* ---------- credits (how it works) ---------- */
-.credits{position:relative;padding:150px 0;text-align:center}
+.credits{position:relative;padding:150px 0;text-align:center;overflow:hidden;isolation:isolate}
+.cr-bg{position:absolute;inset:0;z-index:-2}
+.cr-bg img,.cr-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1)}
+.credits::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(var(--night),rgba(22,11,26,.72) 18%,rgba(22,11,26,.72) 82%,var(--night))}
 .credits .tc{display:block;margin-bottom:26px}
 .credits h2{font-size:clamp(40px,4.6vw,80px);margin-bottom:96px}
 .roll{display:flex;flex-direction:column;gap:84px;max-width:760px;margin:0 auto}
@@ -160,6 +170,9 @@ html.force-motion .kb img{animation:kb 16s ease-in-out infinite alternate}
           mask:radial-gradient(circle 16px at 0 calc(100% - 78px),#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 16px at 100% calc(100% - 78px),#0000 97%,#000) right/51% 100% no-repeat}
 .ticket.feat{background:var(--red);color:var(--milk);padding-top:42px}
 .ticket .tc{color:inherit;opacity:.6}
+.ticket .win{position:relative;height:190px;margin:-12px -10px 22px;border-radius:12px;overflow:hidden;background:var(--plum)}
+.ticket.feat .win{height:230px}
+.ticket .win img,.ticket .win video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
 .ticket h3{font:400 48px/1 var(--serif);font-variation-settings:"opsz" 800;margin:14px 0 6px}
 .ticket.feat h3{font-size:62px}
 .ticket .rt{font-weight:600}
@@ -171,7 +184,7 @@ html.force-motion .kb img{animation:kb 16s ease-in-out infinite alternate}
 .ticket .stub a{display:inline-flex;align-items:center;gap:8px;font-weight:700}
 .ticket .stub a i{font-size:20px;transition:transform .4s var(--ease)}
 .ticket .stub a:hover i{transform:translateX(4px)}
-.ticket .badge{position:absolute;top:16px;right:18px;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+.ticket .badge{position:absolute;top:16px;right:18px;z-index:2;background:var(--milk);color:var(--red);padding:5px 10px;border-radius:999px;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.9}
 
 /* ---------- faq ---------- */
 .faq-sec{padding:140px 0}
@@ -229,9 +242,12 @@ footer a:hover{color:var(--milk)}
   .hero-side p{font-size:17px;margin-bottom:22px}
   .hero-side .tc{display:none}
   .hero-side .btn{width:100%}
-  .morph{height:auto;padding:110px 0}
-  .morph-in{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center}
-  .morph-frame{height:auto;width:min(320px,82vw)}
+  .wall{padding:90px 0 100px}
+  .wall-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:32px}
+  .wall-grid{grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
+  .wcol{gap:10px}
+  .wcol:nth-child(even){margin-top:56px}
+  .wtile span{font-size:18px;left:12px;bottom:10px}
   .ch-head{padding:96px 0 32px}
   .track-wrap{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
   .track-wrap::-webkit-scrollbar{display:none}
@@ -292,17 +308,12 @@ footer a:hover{color:var(--milk)}
     </div>
   </section>
 
-  <section class="morph" id="morph">
-    <div class="wrap morph-in">
-      <h2 class="serif" data-split data-t="morph_h"></h2>
-      <div class="morph-frame">
-        <img class="photo" id="mPhoto" alt="">
-        <img class="film" id="mFilm" alt="">
-        <div class="scan" id="scan"></div>
-        <span class="lbl" id="mLbl"></span>
-      </div>
-      <p class="note muted" data-t="morph_p" data-rv></p>
+  <section class="wall" id="wall">
+    <div class="wrap wall-head">
+      <h2 class="serif" data-split data-t="wall_h"></h2>
+      <p class="muted" data-t="wall_p" data-rv></p>
     </div>
+    <div class="wall-grid" id="wallGrid"></div>
   </section>
 
   <div class="marq" aria-hidden="true"><div class="marq-t" id="marq"></div></div>
@@ -315,7 +326,8 @@ footer a:hover{color:var(--milk)}
     <div class="track-wrap"><div class="track" id="track"></div></div>
   </section>
 
-  <section class="credits">
+  <section class="credits" id="credits">
+    <div class="cr-bg" id="crBg"></div>
     <div class="wrap">
       <span class="tc" data-t="scene4"></span>
       <h2 class="serif" data-split data-t="cr_h"></h2>
@@ -382,7 +394,6 @@ const FILMS = [
   { poster:"media/gen/s4.jpg", src:"media/gen/c4.mp4", tag:{kk:"Үйлену тойы",ru:"Свадьба"},         title:{kk:"Бірінші би",ru:"Первый танец"},      text:{kk:"Тойда үлкен экранда көрсетіңіз.",ru:"Покажите на большом экране свадьбы."} },
   { poster:"media/gen/s5.jpg", src:"media/gen/c5.mp4", tag:{kk:"Ата-анаға",ru:"Родителям"},         title:{kk:"Қырық жыл бірге",ru:"Сорок лет вместе"}, text:{kk:"Олардың хикаясы, олардың құрметіне.",ru:"Их история, в их честь."} },
 ];
-const MORPH = { photo:"media/gen/photo.jpg", film:"media/gen/s1.jpg" };
 const FINALE_BG = "media/gen/s2.jpg";
 /* ========================================================= */
 
@@ -391,9 +402,9 @@ const T = {
  h1:{kk:["Сіздің","махаббатыңыз","<em>мультфильмде</em>"],ru:["Ваша","любовь","<em>в мультфильме</em>"]},
  scene1:{kk:"СЦЕНА 01 · ТАНЫСТЫҚ",ru:"СЦЕНА 01 · ЗНАКОМСТВО"},
  hero_p:{kk:"Екі фото мен хикаяңыз жеткілікті. Басты кейіпкерлері өздеріңіз болатын фильм 48 сағатта дайын.",ru:"Два фото и ваша история. Через 48 часов готов фильм, где главные герои вы."},
- morph_h:{kk:"Бір фото. Бір фильм.",ru:"Одно фото. Один фильм."},
- morph_p:{kk:"Сіздің бет-әлпетіңіз, сіздің қалаңыз, сіздің сәттеріңіз. Біз оларды анимация әлеміне көшіреміз.",ru:"Ваши лица, ваш город, ваши моменты. Мы переносим их в мир анимации."},
- lbl_photo:{kk:"ФОТО",ru:"ФОТО"}, lbl_film:{kk:"ФИЛЬМ",ru:"ФИЛЬМ"},
+ wall_h:{kk:"Әр жұп өз фильміне лайық",ru:"Каждая пара достойна своего фильма"},
+ wall_p:{kk:"Мұның бәрі біздің студияда жасалған фильмдер. Сіздікі келесі болады.",ru:"Всё это фильмы нашей студии. Ваш будет следующим."},
+ wall_cta:{kk:"Сіздің фильміңіз осында болады",ru:"Здесь будет ваш фильм"},
  scene3:{kk:"СЦЕНА 03 · ТАРАУЛАР",ru:"СЦЕНА 03 · ГЛАВЫ"},
  ch_h:{kk:"Өміріңіздің ең маңызды тараулары",ru:"Главные главы вашей жизни"},
  ch_go:{kk:"Осындай фильм алу",ru:"Хочу такой фильм"},
@@ -419,9 +430,9 @@ const CREDITS = [
 ];
 
 const TIX = [
- {name:{kk:"Классика",ru:"Классика"}, rt:{kk:"1 минутқа дейін",ru:"до 1 минуты"}, li:{kk:["2K сапа","Музыка","Кейіпкерлерді бекіту"],ru:["Качество 2K","Музыка","Утверждение героев"]}},
- {feat:true, name:{kk:"Премиум",ru:"Премиум"}, rt:{kk:"2 минутқа дейін",ru:"до 2 минут"}, li:{kk:["Кинолық 2K сапа","Қазақша немесе орысша дауыстау","Есімдеріңіз бен күндеріңіз","Тойда көрсетуге арналған нұсқа"],ru:["Кино-качество 2K","Озвучка на казахском или русском","Ваши имена и даты","Версия для показа на свадьбе"]}},
- {name:{kk:"Ультима",ru:"Ультима"}, rt:{kk:"3 минутқа дейін",ru:"до 3 минут"}, li:{kk:["4K сапа","Жеке сценарий","Кәсіби дауыстау"],ru:["Качество 4K","Свой сценарий","Профессиональная озвучка"]}},
+ {film:0, name:{kk:"Классика",ru:"Классика"}, rt:{kk:"1 минутқа дейін",ru:"до 1 минуты"}, li:{kk:["2K сапа","Музыка","Кейіпкерлерді бекіту"],ru:["Качество 2K","Музыка","Утверждение героев"]}},
+ {film:1, feat:true, name:{kk:"Премиум",ru:"Премиум"}, rt:{kk:"2 минутқа дейін",ru:"до 2 минут"}, li:{kk:["Кинолық 2K сапа","Қазақша немесе орысша дауыстау","Есімдеріңіз бен күндеріңіз","Тойда көрсетуге арналған нұсқа"],ru:["Кино-качество 2K","Озвучка на казахском или русском","Ваши имена и даты","Версия для показа на свадьбе"]}},
+ {film:3, name:{kk:"Ультима",ru:"Ультима"}, rt:{kk:"3 минутқа дейін",ru:"до 3 минут"}, li:{kk:["4K сапа","Жеке сценарий","Кәсіби дауыстау"],ru:["Качество 4K","Свой сценарий","Профессиональная озвучка"]}},
 ];
 
 const FAQ = [
@@ -479,10 +490,17 @@ function render(){
     </article>`).join("") + `
     <article class="card end"><h3>${T.ch_end[L]}</h3><a class="btn btn-red" target="_blank" rel="noopener" href="${wa(MSG.general[L])}"><i class="ph-fill ph-whatsapp-logo"></i>${T.cta[L]}</a></article>`;
 
+  const order=[0,1,2,3,4,1,2,0,4,3];
+  const tiles=order.map((k,n)=>{const f=FILMS[k]; return `<div class="wtile kb" data-i="${k}">${media(f)}<span><small>${f.tag[L]}</small>${f.title[L]}</span></div>`;});
+  tiles.splice(7,0,`<div class="wtile cta"><b>${T.wall_cta[L]}</b><a target="_blank" rel="noopener" href="${wa(MSG.general[L])}"><i class="ph-fill ph-whatsapp-logo"></i>${T.cta[L]}</a></div>`);
+  const ncol=mobile()?2:5, cols=Array.from({length:ncol},()=>[]); tiles.slice(0, mobile()?6:tiles.length).forEach((t,n)=>cols[n%ncol].push(t));
+  $("#wallGrid").innerHTML = cols.map(c=>`<div class="wcol">${c.join("")}</div>`).join("");
+  $$(".wtile[data-i]").forEach(el=>vio.observe(el));
   $("#roll").innerHTML = CREDITS.map(c=>`<div class="role"><small>${c.role[L]}</small><b>${c.who[L]}</b><span>${c.d[L]}</span></div>`).join("");
 
   $("#tix").innerHTML = TIX.map(t=>`
     <div class="ticket ${t.feat?"feat":""}" data-rv>
+      <div class="win">${media(FILMS[t.film])}</div>
       ${t.feat?`<span class="badge">${T.popular[L]}</span>`:""}
       <span class="tc">QIYAL · ${t.feat?"ROW A":"ROW B"}</span><h3>${t.name[L]}</h3><span class="rt">${t.rt[L]}</span>
       <ul>${t.li[L].map(x=>`<li><i class="ph-bold ph-check"></i>${x}</li>`).join("")}</ul>
@@ -492,13 +510,12 @@ function render(){
   $("#faq").innerHTML = FAQ.map(f=>`<details><summary>${f.q[L]}<i class="ph ph-plus"></i></summary><p>${f.a[L]}</p></details>`).join("");
   $("#waShown").textContent = "+"+WHATSAPP.replace(/^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/,"$1 $2 $3 $4 $5");
   $("#yr").textContent = new Date().getFullYear();
-  $("#mLbl").textContent = T.lbl_photo[L];
-  $$(".card[data-i]").forEach(el=>vio.observe(el));
+  $$(".card[data-i],.ticket .win").forEach(el=>vio.observe(el));
 }
 
 /* play videos only while visible */
 const vio = new IntersectionObserver(es=>es.forEach(e=>{
-  e.target.querySelectorAll("video").forEach(v=>{ if(reduce) return; if(e.isIntersecting){ v.preload="auto"; v.play().catch(()=>{}); } else v.pause(); });
+  e.target.querySelectorAll("video").forEach(v=>{ if(e.isIntersecting){ v.preload="auto"; v.play().catch(()=>{}); } else v.pause(); });
 }),{threshold:.15});
 
 /* static media slots */
@@ -506,26 +523,25 @@ $("#heroBlur").innerHTML = `<img src="${FILMS[0].poster}" alt="">`;
 const slides = FILMS.map((f,i)=>`<div class="slide kb" style="position:absolute;inset:0;opacity:${i?0:1};transition:opacity 1.4s ease">${media(f)}</div>`).join("");
 $("#heroFrame").insertAdjacentHTML("afterbegin", slides);
 $("#mobBg").innerHTML = slides;
-$("#mPhoto").src = MORPH.photo;
-$("#mPhoto").onerror = function(){ this.onerror=null; this.src=FILMS[0].poster; this.style.filter="grayscale(1) contrast(1.05) brightness(.95)"; };
-$("#mFilm").src = MORPH.film;
+$("#crBg").innerHTML = media(FILMS[3]);
 $("#takeMedia").innerHTML = media(FILMS[1]);
 $("#finaleBg").innerHTML = `<img src="${FINALE_BG}" alt="">`;
-$$(".slide,.take-media").forEach(el=>vio.observe(el));
+$$(".slide,.take-media,#crBg").forEach(el=>vio.observe(el));
 
 /* hero crossfade (both desktop frame and mobile bg) + live timecode */
 let si=0; const t0=performance.now();
-setInterval(()=>{ if(reduce) return; [$("#heroFrame"),$("#mobBg")].forEach(box=>{ const s=box.querySelectorAll(".slide"); s[si].style.opacity=0; s[(si+1)%s.length].style.opacity=1; }); si=(si+1)%FILMS.length; }, 5200);
+setInterval(()=>{ [$("#heroFrame"),$("#mobBg")].forEach(box=>{ const s=box.querySelectorAll(".slide"); s[si].style.opacity=0; s[(si+1)%s.length].style.opacity=1; }); si=(si+1)%FILMS.length; }, 5200);
 (function tick(){ $("#tcLive").textContent = tc((performance.now()-t0)/1000); requestAnimationFrame(tick); })();
 
 /* modal player (only when the clip exists) */
 const modal=$("#modal"), mv=$("#mv");
-$("#track").addEventListener("click",e=>{
+const openFilm=e=>{
   if(e.target.closest("a")) return;
-  const c=e.target.closest(".card[data-i]"); if(!c) return; const f=FILMS[c.dataset.i];
+  const c=e.target.closest(".card[data-i],.wtile[data-i]"); if(!c) return; const f=FILMS[c.dataset.i];
   const v=c.querySelector("video"); if(!v || v.readyState<2) return;
   mv.src=f.src; mv.poster=f.poster; modal.classList.add("on"); mv.play().catch(()=>{});
-});
+};
+$("#track").addEventListener("click",openFilm); $("#wallGrid").addEventListener("click",openFilm);
 const close=()=>{modal.classList.remove("on");mv.pause();mv.removeAttribute("src");mv.load();};
 modal.querySelector(".x").onclick=close; modal.addEventListener("click",e=>{if(e.target===modal)close();}); addEventListener("keydown",e=>{if(e.key==="Escape")close();});
 
@@ -565,12 +581,9 @@ function scenes(){
     $$("[data-split]").forEach(el=>gsap.fromTo(el.querySelectorAll(".sw"),{yPercent:110},{yPercent:0,duration:1,ease:"power4.out",stagger:.05,scrollTrigger:{trigger:el,start:"top 86%",once:true}}));
     $$("[data-rv]").forEach(el=>gsap.fromTo(el,{y:36,autoAlpha:0},{y:0,autoAlpha:1,duration:1,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 90%",once:true}}));
 
-    // photo -> film wipe
-    gsap.timeline({scrollTrigger:{trigger:"#morph",start:mobile()?"top 65%":"top top",end:mobile()?"bottom 55%":"+=120%",scrub:1,pin:!mobile(),
-        onUpdate:s=>{$("#mLbl").textContent = s.progress>.5?T.lbl_film[L]:T.lbl_photo[L];}}})
-      .to("#mFilm",{clipPath:"inset(0 0 0% 0)",ease:"none"},0)
-      .fromTo("#scan",{top:"0%"},{top:"100%",ease:"none"},0)
-      .to("#scan",{autoAlpha:0,duration:.04});
+    // film wall: columns drift at different speeds
+    $$(".wcol").forEach((c,n)=>gsap.fromTo(c,{y:(n%2?60:-20)},{y:(n%2?-80:40),ease:"none",scrollTrigger:{trigger:"#wall",start:"top bottom",end:"bottom top",scrub:1}}));
+    gsap.fromTo(".wtile",{autoAlpha:0,y:50},{autoAlpha:1,y:0,duration:1,ease:"power3.out",stagger:.05,scrollTrigger:{trigger:"#wall",start:"top 75%",once:true}});
 
     // chapters: horizontal pan on desktop
     if(!mobile()){
@@ -639,6 +652,7 @@ if(hasGsap && !reduce && window.Lenis){
 }
 intro().then(()=>{ scenes(); living(); });
 addEventListener("load",()=>hasGsap && ScrollTrigger.refresh());
+let wasMob=mobile(); addEventListener("resize",()=>{ if(mobile()!==wasMob){ wasMob=mobile(); render(); renderMarq && renderMarq(); scenes(); } });
 setTimeout(()=>{ const l=$("#loader"); if(l){ l.remove(); document.body.classList.remove("loading"); if(window.gsap){ gsap.set("#bars span",{scaleY:mobile()?0:.18}); gsap.set("#h1 .ln > span,.frame,.hero-side > *",{clearProps:"all"}); } } }, 7000);
 </script>
 </body>
