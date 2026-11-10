@@ -6,7 +6,10 @@
 <title>QIYAL | Сіздің махаббатыңыз мультфильмде</title>
 <meta name="description" content="Персональный мультфильм по вашим фото: love story, қыз ұзату, свадьба, предложение. Готово за 48 часов. Заказ в WhatsApp.">
 <meta property="og:title" content="QIYAL | Сіздің махаббатыңыз мультфильмде">
-<meta property="og:image" content="media/gen/s2.jpg">
+<meta property="og:image" content="https://adacracker.github.io/qiyal-site/media/gen/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:description" content="Екі фото мен хикаяңыз. 48 сағатта жеке мультфильм.">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#140A18">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,7 +149,32 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 
 /* STORYBOARD -> FILM */
 .sb{padding:130px 0 120px}
-.sb-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:60px}
+.sb-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:80px;align-items:center}
+.sb-wrap h2{font-size:clamp(46px,5.4vw,96px);margin:20px 0 56px}
+.sb .steps{grid-template-columns:1fr;gap:30px}
+.chat .core{background:#0E1714;height:680px;display:flex;flex-direction:column}
+.chat-top{position:relative!important;display:flex;align-items:center;gap:12px;padding:16px 18px;background:#1B2722;border-bottom:1px solid rgba(255,255,255,.06)}
+.chat-top .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--red);font:600 18px var(--serif)}
+.chat-top b{display:block;font-size:15px}.chat-top small{color:#7FD3A6;font-size:12px}
+.chat-top i{margin-left:auto;font-size:22px;color:var(--muted)}
+.chat-body{position:relative!important;flex:1;overflow:hidden;padding:18px 14px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;
+  background-color:#0E1714;background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:18px 18px}
+.msg{max-width:78%;padding:9px 12px 18px;border-radius:14px;font-size:14.5px;line-height:1.4;position:relative;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.msg.in{opacity:1;transform:none}
+.msg.me{align-self:flex-end;background:#1E5E46;border-bottom-right-radius:4px}
+.msg.them{align-self:flex-start;background:#1F2C27;border-bottom-left-radius:4px}
+.msg time{position:absolute;right:10px;bottom:4px;font-size:10.5px;color:rgba(255,255,255,.5)}
+.msg.me time::after{content:" ✓✓";color:#53BDEB}
+.msg .pics{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:-3px -6px 6px}
+.msg .pics img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px}
+.msg .vid{position:relative;margin:-3px -6px 6px;border-radius:10px;overflow:hidden;aspect-ratio:9/12}
+.msg .vid video,.msg .vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.msg .vid span{position:absolute;left:8px;bottom:8px;font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.5)}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:14px;background:#1F2C27;opacity:0;transition:opacity .3s}
+.typing.in{opacity:1}
+.typing i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);animation:dot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
 .sb-head h2{font-size:clamp(46px,5.4vw,96px);max-width:11ch;margin-top:20px}
 .sb-head p{max-width:34ch;font-size:18px}
 .sb-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
@@ -288,7 +316,9 @@ footer a{display:inline-flex;gap:8px;align-items:center}
   .ch .tc{margin-bottom:12px}
   .rail{display:none}
   .sb{padding:96px 0}
-  .sb-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:32px}
+  .sb-wrap{grid-template-columns:1fr;gap:40px}
+  .sb-wrap h2{margin:16px 0 32px}
+  .chat .core{height:560px}
   .sb-grid{grid-template-columns:1fr;gap:14px}
   .sb-grid .bezel:first-child{grid-row:auto}
   .sb-grid .bezel:first-child .cmp{height:auto;aspect-ratio:9/12}
@@ -349,10 +379,17 @@ footer a{display:inline-flex;gap:8px;align-items:center}
 
   <section class="sb" id="process">
     <div class="wrap">
-      <div class="sb-head">
-        <div><span class="pill"><b></b><span data-t="sb_pill"></span></span><h2 class="serif" data-split data-t="sb_h"></h2></div>
+      <div class="sb-wrap">
+        <div>
+          <span class="pill"><b></b><span data-t="sb_pill"></span></span>
+          <h2 class="serif" data-split data-t="sb_h"></h2>
+          <div class="steps" id="steps"></div>
+        </div>
+        <div class="chat bezel"><div class="core">
+          <div class="chat-top"><span class="av">Q</span><div><b>QIYAL</b><small data-t="online"></small></div><i class="ph-light ph-phone"></i></div>
+          <div class="chat-body" id="chat"></div>
+        </div></div>
       </div>
-      <div class="steps" id="steps"></div>
     </div>
   </section>
 
@@ -424,6 +461,7 @@ const T = {
  hero_p:{kk:"Екі фото мен хикаяңыз жеткілікті. Басты кейіпкерлері өздеріңіз болатын фильм 48 сағатта дайын.",ru:"Два фото и ваша история. Через 48 часов готов фильм, где главные герои вы."},
  m1:{kk:"сағатта дайын",ru:"часов до премьеры"}, m2:{kk:"фото жеткілікті",ru:"фото достаточно"}, m3:{kk:"тіл таңдауы",ru:"язык на выбор"},
  sb_pill:{kk:"Қалай жасаймыз",ru:"Как мы работаем"},
+ online:{kk:"желіде",ru:"в сети"},
  sb_h:{kk:"Үш қадам. Екі күн.",ru:"Три шага. Два дня."},
  sb_p:{kk:"Әр көрініс қолмен сызылған эскизден басталады. Сызықты жылжытып, айырмашылықты көріңіз.",ru:"Каждая сцена начинается с эскиза от руки. Потяните линию и посмотрите, как он оживает."},
  sketch:{kk:"Эскиз",ru:"Эскиз"}, filmL:{kk:"Фильм",ru:"Фильм"},
@@ -558,6 +596,38 @@ vio.observe($("#finaleBg"));
 const chio = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) setChapter(+e.target.dataset.k); }),{rootMargin:"-49% 0px -49% 0px"});
 const storyIo = new IntersectionObserver(([e])=>{ const was=storyVisible; storyVisible=e.isIntersecting; setChapter(active); if(storyVisible&&!was) transform(active); });
 
+/* live WhatsApp demo: plays once when it scrolls into view */
+const CHAT = {
+ kk:[{me:1,t:"Сәлеметсіз бе! Махаббат хикаямыз туралы мультфильм қалаймыз 🙏",ts:"14:02"},
+     {me:1,pics:["media/gen/p_her.jpg","media/gen/p_him.jpg"],t:"Міне фотоларымыз. Алматыда, күзде таныстық ☕️",ts:"14:03"},
+     {me:0,t:"Керемет хикая! Кейіпкерлеріңіздің портреттерін 2 сағатта жібереміз.",ts:"14:05"},
+     {me:0,pics:["media/gen/t_her.jpg","media/gen/t_him.jpg"],t:"Портреттер дайын. Ұнай ма?",ts:"16:40"},
+     {me:1,t:"Бұл біз ғой! 😍 Иә, жалғастырыңыз",ts:"16:41"},
+     {me:0,vid:"media/gen/c15",t:"Фильміңіз дайын 🎬",ts:"Ертеңіне 11:20"}],
+ ru:[{me:1,t:"Здравствуйте! Хотим мультфильм про нашу историю 🙏",ts:"14:02"},
+     {me:1,pics:["media/gen/p_her.jpg","media/gen/p_him.jpg"],t:"Вот наши фото. Познакомились осенью в Алматы ☕️",ts:"14:03"},
+     {me:0,t:"Какая история! Пришлём портреты героев через 2 часа.",ts:"14:05"},
+     {me:0,pics:["media/gen/t_her.jpg","media/gen/t_him.jpg"],t:"Портреты готовы. Нравится?",ts:"16:40"},
+     {me:1,t:"Это же мы! 😍 Да, продолжайте",ts:"16:41"},
+     {me:0,vid:"media/gen/c15",t:"Ваш фильм готов 🎬",ts:"На следующий день 11:20"}]};
+let chatPlayed=false, chatTimers=[];
+function chatHTML(m){
+  const body = m.pics?`<div class="pics">${m.pics.map(u=>`<img src="${u}" alt="" loading="lazy" onerror="this.src='media/gen/s1.jpg'">`).join("")}</div>`
+             : m.vid?`<div class="vid"><img src="${m.vid.replace("/c","/s")}.jpg" alt=""><video src="${m.vid}.mp4" muted loop playsinline preload="none"></video><span>0:05</span></div>`:"";
+  return `<div class="msg ${m.me?"me":"them"}">${body}${m.t}<time>${m.ts}</time></div>`;
+}
+function playChat(){
+  chatTimers.forEach(clearTimeout); chatTimers=[];
+  const box=$("#chat"); box.innerHTML="";
+  const list=CHAT[L]; let t=200;
+  list.forEach((m,k)=>{
+    if(!m.me){ chatTimers.push(setTimeout(()=>{ box.insertAdjacentHTML("beforeend",'<div class="typing"><i></i><i></i><i></i></div>'); requestAnimationFrame(()=>box.lastElementChild.classList.add("in")); }, t)); t+=900; }
+    chatTimers.push(setTimeout(()=>{ box.querySelector(".typing")?.remove(); box.insertAdjacentHTML("beforeend",chatHTML(m)); const el=box.lastElementChild; requestAnimationFrame(()=>el.classList.add("in")); const v=el.querySelector("video"); if(v){ v.preload="auto"; v.play().catch(()=>{}); } }, t));
+    t+= m.pics||m.vid ? 1300 : 1000;
+  });
+}
+new IntersectionObserver(([e])=>{ if(e.isIntersecting && !chatPlayed){ chatPlayed=true; playChat(); } },{threshold:.35}).observe($(".chat"));
+
 /* live REC timecode */
 const t0=performance.now();
 (function tick(){ const el=$("#tcLive"); if(el) el.textContent=tc((performance.now()-t0)/1000); requestAnimationFrame(tick); })();
@@ -628,6 +698,8 @@ function living(){
   addEventListener("pointermove",e=>{dx(e.clientX);dy(e.clientY);});
   $("#posters").addEventListener("pointerover",e=>gsap.to(d,{scale:e.target.closest(".poster")?1:0,duration:.4,ease:"power3.out"}));
   $("#posters").addEventListener("pointerleave",()=>gsap.to(d,{scale:0,duration:.3}));
+  new IntersectionObserver(([e])=>{ if(!e.isIntersecting) gsap.to(d,{scale:0,duration:.3}); }).observe($("#posters"));
+  addEventListener("wheel",()=>{ const el=document.elementFromPoint(gsap.getProperty(d,"x"),gsap.getProperty(d,"y")); if(!el||!el.closest(".poster")) gsap.to(d,{scale:0,duration:.3}); },{passive:true});
 }
 
 function boot(){
@@ -635,7 +707,7 @@ function boot(){
   $$("#markers > div").forEach(m=>chio.observe(m));
   $$("#rail button").forEach(b=>b.onclick=()=>{ const m=$$("#markers > div")[+b.dataset.k]; window.scrollTo({top:m.getBoundingClientRect().top+scrollY,behavior:"smooth"}); });
 }
-$$(".lang button").forEach(b=>b.onclick=()=>{ L=b.dataset.l; try{localStorage.setItem("qiyal-lang",L)}catch(e){} boot(); scenes(); });
+$$(".lang button").forEach(b=>b.onclick=()=>{ L=b.dataset.l; try{localStorage.setItem("qiyal-lang",L)}catch(e){} boot(); scenes(); if(chatPlayed) playChat(); });
 
 boot();
 storyIo.observe($("#story"));
